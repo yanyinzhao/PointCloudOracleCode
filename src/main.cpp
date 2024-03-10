@@ -184,10 +184,17 @@ int main(int argc, char **argv)
        if (input_file_index >= 0 && input_file_index <= 29)
        {
               std::cout << "== SE_Oracle_Adapt ==" << std::endl;
-              SE_Oracle_Adapt_with_output(poi_num, &point_cloud, poi_list, epsilon, source_poi_index, destination_poi_index, point_cloud_exact_distance,
-                                          terrain_exact_distance, run_knn_query, run_range_query, k_value, range, point_cloud_exact_all_poi_knn_query_list,
-                                          terrain_exact_all_poi_knn_query_list, point_cloud_exact_all_poi_range_query_list, terrain_exact_all_poi_range_query_list,
-                                          write_file_header);
+              SE_Oracle_Adapt_notA2A_or_A2A_with_output(poi_num, &point_cloud, poi_list, epsilon, source_poi_index, destination_poi_index, point_cloud_exact_distance,
+                                                        terrain_exact_distance, run_knn_query, run_range_query, k_value, range, point_cloud_exact_all_poi_knn_query_list,
+                                                        terrain_exact_all_poi_knn_query_list, point_cloud_exact_all_poi_range_query_list, terrain_exact_all_poi_range_query_list,
+                                                        write_file_header, 1);
+              std::cout << std::endl;
+
+              std::cout << "== SE_Oracle_Adapt_A2A ==" << std::endl;
+              SE_Oracle_Adapt_notA2A_or_A2A_with_output(poi_num, &point_cloud, poi_list, epsilon, source_poi_index, destination_poi_index, point_cloud_exact_distance,
+                                                        terrain_exact_distance, run_knn_query, run_range_query, k_value, range, point_cloud_exact_all_poi_knn_query_list,
+                                                        terrain_exact_all_poi_knn_query_list, point_cloud_exact_all_poi_range_query_list, terrain_exact_all_poi_range_query_list,
+                                                        write_file_header, 2);
               std::cout << std::endl;
 
               std::cout << "== EAR_Oracle_Adapt ==" << std::endl;
@@ -198,17 +205,31 @@ int main(int argc, char **argv)
               std::cout << std::endl;
 
               std::cout << "== SU_Oracle_Adapt ==" << std::endl;
-              SU_Oracle_Adapt_with_output(poi_num, &point_cloud, poi_list, source_poi_index, destination_poi_index, point_cloud_exact_distance,
-                                          terrain_exact_distance, run_knn_query, run_range_query, k_value, range, point_cloud_exact_all_poi_knn_query_list,
-                                          terrain_exact_all_poi_knn_query_list, point_cloud_exact_all_poi_range_query_list, terrain_exact_all_poi_range_query_list,
-                                          write_file_header);
+              SU_Oracle_Adapt_notA2A_or_A2A_with_output(poi_num, &point_cloud, poi_list, source_poi_index, destination_poi_index, point_cloud_exact_distance,
+                                                        terrain_exact_distance, run_knn_query, run_range_query, k_value, range, point_cloud_exact_all_poi_knn_query_list,
+                                                        terrain_exact_all_poi_knn_query_list, point_cloud_exact_all_poi_range_query_list, terrain_exact_all_poi_range_query_list,
+                                                        write_file_header, 1);
+              std::cout << std::endl;
+
+              std::cout << "== SU_Oracle_Adapt_A2A ==" << std::endl;
+              SU_Oracle_Adapt_notA2A_or_A2A_with_output(poi_num, &point_cloud, poi_list, source_poi_index, destination_poi_index, point_cloud_exact_distance,
+                                                        terrain_exact_distance, run_knn_query, run_range_query, k_value, range, point_cloud_exact_all_poi_knn_query_list,
+                                                        terrain_exact_all_poi_knn_query_list, point_cloud_exact_all_poi_range_query_list, terrain_exact_all_poi_range_query_list,
+                                                        write_file_header, 2);
               std::cout << std::endl;
 
               std::cout << "== RC_Oracle_Naive ==" << std::endl;
-              RC_Oracle_Naive_with_output(poi_num, &point_cloud, poi_list, source_poi_index, destination_poi_index, point_cloud_exact_distance,
-                                          terrain_exact_distance, run_knn_query, run_range_query, k_value, range, point_cloud_exact_all_poi_knn_query_list,
-                                          terrain_exact_all_poi_knn_query_list, point_cloud_exact_all_poi_range_query_list, terrain_exact_all_poi_range_query_list,
-                                          write_file_header);
+              RC_Oracle_Naive_notA2A_or_A2A_with_output(poi_num, &point_cloud, poi_list, source_poi_index, destination_poi_index, point_cloud_exact_distance,
+                                                        terrain_exact_distance, run_knn_query, run_range_query, k_value, range, point_cloud_exact_all_poi_knn_query_list,
+                                                        terrain_exact_all_poi_knn_query_list, point_cloud_exact_all_poi_range_query_list, terrain_exact_all_poi_range_query_list,
+                                                        write_file_header, 1);
+              std::cout << std::endl;
+
+              std::cout << "== RC_Oracle_Naive_A2A ==" << std::endl;
+              RC_Oracle_Naive_notA2A_or_A2A_with_output(poi_num, &point_cloud, poi_list, source_poi_index, destination_poi_index, point_cloud_exact_distance,
+                                                        terrain_exact_distance, run_knn_query, run_range_query, k_value, range, point_cloud_exact_all_poi_knn_query_list,
+                                                        terrain_exact_all_poi_knn_query_list, point_cloud_exact_all_poi_range_query_list, terrain_exact_all_poi_range_query_list,
+                                                        write_file_header, 2);
               std::cout << std::endl;
        }
 
@@ -226,11 +247,74 @@ int main(int argc, char **argv)
                              write_file_header);
        std::cout << std::endl;
 
-       std::cout << "== SE_Oracle_FastFly_Adapt ==" << std::endl;
-       SE_Oracle_FastFly_Adapt_with_output(poi_num, &point_cloud, poi_list, epsilon, source_poi_index, destination_poi_index, point_cloud_exact_distance,
+       std::cout << "== RC_Oracle_A2P_SmCon ==" << std::endl;
+       RC_Oracle_A2P_SmCon_with_output(poi_num, &point_cloud, poi_list, epsilon, source_poi_index, destination_poi_index, point_cloud_exact_distance,
+                                       terrain_exact_distance, run_knn_query, run_range_query, k_value, range, point_cloud_exact_all_poi_knn_query_list,
+                                       terrain_exact_all_poi_knn_query_list, point_cloud_exact_all_poi_range_query_list, terrain_exact_all_poi_range_query_list,
+                                       write_file_header);
+       std::cout << std::endl;
+
+       std::cout << "== RC_Oracle_A2P_SmQue ==" << std::endl;
+       RC_Oracle_A2P_SmQue_or_A2A_with_output(poi_num, &point_cloud, poi_list, epsilon, source_poi_index, destination_poi_index, point_cloud_exact_distance,
+                                              terrain_exact_distance, run_knn_query, run_range_query, k_value, range, point_cloud_exact_all_poi_knn_query_list,
+                                              terrain_exact_all_poi_knn_query_list, point_cloud_exact_all_poi_range_query_list, terrain_exact_all_poi_range_query_list,
+                                              write_file_header, 1);
+       std::cout << std::endl;
+
+       std::cout << "== RC_Oracle_A2A ==" << std::endl;
+       RC_Oracle_A2P_SmQue_or_A2A_with_output(poi_num, &point_cloud, poi_list, epsilon, source_poi_index, destination_poi_index, point_cloud_exact_distance,
+                                              terrain_exact_distance, run_knn_query, run_range_query, k_value, range, point_cloud_exact_all_poi_knn_query_list,
+                                              terrain_exact_all_poi_knn_query_list, point_cloud_exact_all_poi_range_query_list, terrain_exact_all_poi_range_query_list,
+                                              write_file_header, 2);
+       std::cout << std::endl;
+
+       std::cout << "== TI_Oracle_NaiveProx ==" << std::endl;
+       TI_Oracle_NaiveProx_or_Rtree_or_TigLoo_with_output(poi_num, &point_cloud, poi_list, epsilon, source_poi_index, destination_poi_index, point_cloud_exact_distance,
+                                                          terrain_exact_distance, run_knn_query, run_range_query, k_value, range, point_cloud_exact_all_poi_knn_query_list,
+                                                          terrain_exact_all_poi_knn_query_list, point_cloud_exact_all_poi_range_query_list, terrain_exact_all_poi_range_query_list,
+                                                          write_file_header, 1);
+       std::cout << std::endl;
+
+       std::cout << "== TI_Oracle_Rtree ==" << std::endl;
+       TI_Oracle_NaiveProx_or_Rtree_or_TigLoo_with_output(poi_num, &point_cloud, poi_list, epsilon, source_poi_index, destination_poi_index, point_cloud_exact_distance,
+                                                          terrain_exact_distance, run_knn_query, run_range_query, k_value, range, point_cloud_exact_all_poi_knn_query_list,
+                                                          terrain_exact_all_poi_knn_query_list, point_cloud_exact_all_poi_range_query_list, terrain_exact_all_poi_range_query_list,
+                                                          write_file_header, 2);
+       std::cout << std::endl;
+
+       std::cout << "== TI_Oracle_TigLoo ==" << std::endl;
+       TI_Oracle_NaiveProx_or_Rtree_or_TigLoo_with_output(poi_num, &point_cloud, poi_list, epsilon, source_poi_index, destination_poi_index, point_cloud_exact_distance,
+                                                          terrain_exact_distance, run_knn_query, run_range_query, k_value, range, point_cloud_exact_all_poi_knn_query_list,
+                                                          terrain_exact_all_poi_knn_query_list, point_cloud_exact_all_poi_range_query_list, terrain_exact_all_poi_range_query_list,
+                                                          write_file_header, 3);
+       std::cout << std::endl;
+
+       std::cout << "== TI_Oracle ==" << std::endl;
+       TI_Oracle_notA2A_or_A2A_with_output(poi_num, &point_cloud, poi_list, epsilon, source_poi_index, destination_poi_index, point_cloud_exact_distance,
                                            terrain_exact_distance, run_knn_query, run_range_query, k_value, range, point_cloud_exact_all_poi_knn_query_list,
                                            terrain_exact_all_poi_knn_query_list, point_cloud_exact_all_poi_range_query_list, terrain_exact_all_poi_range_query_list,
-                                           write_file_header);
+                                           write_file_header, 1);
+       std::cout << std::endl;
+
+       std::cout << "== TI_Oracle_A2A ==" << std::endl;
+       TI_Oracle_notA2A_or_A2A_with_output(poi_num, &point_cloud, poi_list, epsilon, source_poi_index, destination_poi_index, point_cloud_exact_distance,
+                                           terrain_exact_distance, run_knn_query, run_range_query, k_value, range, point_cloud_exact_all_poi_knn_query_list,
+                                           terrain_exact_all_poi_knn_query_list, point_cloud_exact_all_poi_range_query_list, terrain_exact_all_poi_range_query_list,
+                                           write_file_header, 2);
+       std::cout << std::endl;
+
+       std::cout << "== SE_Oracle_FastFly_Adapt ==" << std::endl;
+       SE_Oracle_FastFly_Adapt_notA2A_or_A2A_with_output(poi_num, &point_cloud, poi_list, epsilon, source_poi_index, destination_poi_index, point_cloud_exact_distance,
+                                                         terrain_exact_distance, run_knn_query, run_range_query, k_value, range, point_cloud_exact_all_poi_knn_query_list,
+                                                         terrain_exact_all_poi_knn_query_list, point_cloud_exact_all_poi_range_query_list, terrain_exact_all_poi_range_query_list,
+                                                         write_file_header, 1);
+       std::cout << std::endl;
+
+       std::cout << "== SE_Oracle_FastFly_Adapt_A2A ==" << std::endl;
+       SE_Oracle_FastFly_Adapt_notA2A_or_A2A_with_output(poi_num, &point_cloud, poi_list, epsilon, source_poi_index, destination_poi_index, point_cloud_exact_distance,
+                                                         terrain_exact_distance, run_knn_query, run_range_query, k_value, range, point_cloud_exact_all_poi_knn_query_list,
+                                                         terrain_exact_all_poi_knn_query_list, point_cloud_exact_all_poi_range_query_list, terrain_exact_all_poi_range_query_list,
+                                                         write_file_header, 2);
        std::cout << std::endl;
 
        std::cout << "== EAR_Oracle_FastFly_Adapt ==" << std::endl;
@@ -240,11 +324,11 @@ int main(int argc, char **argv)
                                             write_file_header);
        std::cout << std::endl;
 
-       std::cout << "== CH_Adapt ==" << std::endl;
-       CH_Adapt_with_output(&point_cloud, poi_list, source_poi_index, destination_poi_index, point_cloud_exact_distance,
-                            terrain_exact_distance, run_knn_query, run_range_query, k_value, range, point_cloud_exact_all_poi_knn_query_list,
-                            terrain_exact_all_poi_knn_query_list, point_cloud_exact_all_poi_range_query_list, terrain_exact_all_poi_range_query_list,
-                            write_file_header);
+       std::cout << "== DIO_Adapt ==" << std::endl;
+       DIO_Adapt_with_output(&point_cloud, poi_list, source_poi_index, destination_poi_index, point_cloud_exact_distance,
+                             terrain_exact_distance, run_knn_query, run_range_query, k_value, range, point_cloud_exact_all_poi_knn_query_list,
+                             terrain_exact_all_poi_knn_query_list, point_cloud_exact_all_poi_range_query_list, terrain_exact_all_poi_range_query_list,
+                             write_file_header);
        std::cout << std::endl;
 
        std::cout << "== Kaul_Adapt ==" << std::endl;
