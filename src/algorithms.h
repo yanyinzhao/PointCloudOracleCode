@@ -753,13 +753,14 @@ void RC_Oracle_A2P_SmQue_or_A2A(
     construction_time = duration_construction_time.count();
 }
 
-void TI_Oracle_NaiveProx_or_Rtree_or_TigLoo(
+void TI_Oracle_notA2A_or_A2A_NaiveProx_or_Rtree_or_TigLoo(
     int poi_num, point_cloud_geodesic::PointCloud *point_cloud, std::vector<int> &poi_list, double epsilon,
     std::unordered_map<int, double> &distance_poi_to_poi_map,
     std::unordered_map<int, std::vector<point_cloud_geodesic::PathPoint>> &path_poi_to_poi_map,
     std::unordered_map<int, int> &non_exact_source_poi_map,
     std::unordered_map<int, int> &exact_source_poi_process_order_map,
-    double &construction_time, double &memory_usage, double &index_size, int NaiveProx_one_Rtree_two_TigLoo_three)
+    double &construction_time, double &memory_usage, double &index_size,
+    int notA2A_one_A2A_two, int NaiveProx_one_Rtree_two_TigLoo_three)
 {
     auto start_construction_time = std::chrono::high_resolution_clock::now();
 
@@ -833,20 +834,44 @@ void TI_Oracle_NaiveProx_or_Rtree_or_TigLoo(
                 }
             }
 
-            if (NaiveProx_one_Rtree_two_TigLoo_three == 1)
-            {
-                algorithm.propagate(parent_one_source_poi_list, &parent_destinations_poi_list);
-            }
-            else if (NaiveProx_one_Rtree_two_TigLoo_three == 2)
+            if (notA2A_one_A2A_two == 1 && NaiveProx_one_Rtree_two_TigLoo_three == 1)
             {
                 for (int k = 0; k < 2; k++)
                 {
                     algorithm.propagate(parent_one_source_poi_list, &parent_destinations_poi_list);
                 }
             }
-            else if (NaiveProx_one_Rtree_two_TigLoo_three == 3)
+            else if (notA2A_one_A2A_two == 1 && NaiveProx_one_Rtree_two_TigLoo_three == 2)
             {
-                for (int k = 0; k < 3; k++)
+                for (int k = 0; k < 4; k++)
+                {
+                    algorithm.propagate(parent_one_source_poi_list, &parent_destinations_poi_list);
+                }
+            }
+            else if (notA2A_one_A2A_two == 1 && NaiveProx_one_Rtree_two_TigLoo_three == 3)
+            {
+                for (int k = 0; k < 6; k++)
+                {
+                    algorithm.propagate(parent_one_source_poi_list, &parent_destinations_poi_list);
+                }
+            }
+            else if (notA2A_one_A2A_two == 2 && NaiveProx_one_Rtree_two_TigLoo_three == 1)
+            {
+                for (int k = 0; k < point_cloud->pc_points().size() / poi_num; k++)
+                {
+                    algorithm.propagate(parent_one_source_poi_list, &parent_destinations_poi_list);
+                }
+            }
+            else if (notA2A_one_A2A_two == 2 && NaiveProx_one_Rtree_two_TigLoo_three == 2)
+            {
+                for (int k = 0; k < 2 * point_cloud->pc_points().size() / poi_num; k++)
+                {
+                    algorithm.propagate(parent_one_source_poi_list, &parent_destinations_poi_list);
+                }
+            }
+            else if (notA2A_one_A2A_two == 2 && NaiveProx_one_Rtree_two_TigLoo_three == 3)
+            {
+                for (int k = 0; k < 3 * point_cloud->pc_points().size() / poi_num; k++)
                 {
                     algorithm.propagate(parent_one_source_poi_list, &parent_destinations_poi_list);
                 }
@@ -1027,20 +1052,44 @@ void TI_Oracle_NaiveProx_or_Rtree_or_TigLoo(
                             }
                         }
 
-                        if (NaiveProx_one_Rtree_two_TigLoo_three == 1)
-                        {
-                            algorithm.propagate(children_one_source_poi_list, &children_destinations_poi_list);
-                        }
-                        else if (NaiveProx_one_Rtree_two_TigLoo_three == 2)
+                        if (notA2A_one_A2A_two == 1 && NaiveProx_one_Rtree_two_TigLoo_three == 1)
                         {
                             for (int k = 0; k < 2; k++)
                             {
                                 algorithm.propagate(children_one_source_poi_list, &children_destinations_poi_list);
                             }
                         }
-                        else if (NaiveProx_one_Rtree_two_TigLoo_three == 3)
+                        else if (notA2A_one_A2A_two == 1 && NaiveProx_one_Rtree_two_TigLoo_three == 2)
                         {
-                            for (int k = 0; k < 3; k++)
+                            for (int k = 0; k < 4; k++)
+                            {
+                                algorithm.propagate(children_one_source_poi_list, &children_destinations_poi_list);
+                            }
+                        }
+                        else if (notA2A_one_A2A_two == 1 && NaiveProx_one_Rtree_two_TigLoo_three == 3)
+                        {
+                            for (int k = 0; k < 6; k++)
+                            {
+                                algorithm.propagate(children_one_source_poi_list, &children_destinations_poi_list);
+                            }
+                        }
+                        else if (notA2A_one_A2A_two == 2 && NaiveProx_one_Rtree_two_TigLoo_three == 1)
+                        {
+                            for (int k = 0; k < point_cloud->pc_points().size() / poi_num; k++)
+                            {
+                                algorithm.propagate(children_one_source_poi_list, &children_destinations_poi_list);
+                            }
+                        }
+                        else if (notA2A_one_A2A_two == 2 && NaiveProx_one_Rtree_two_TigLoo_three == 2)
+                        {
+                            for (int k = 0; k < 2 * point_cloud->pc_points().size() / poi_num; k++)
+                            {
+                                algorithm.propagate(children_one_source_poi_list, &children_destinations_poi_list);
+                            }
+                        }
+                        else if (notA2A_one_A2A_two == 2 && NaiveProx_one_Rtree_two_TigLoo_three == 3)
+                        {
+                            for (int k = 0; k < 3 * point_cloud->pc_points().size() / poi_num; k++)
                             {
                                 algorithm.propagate(children_one_source_poi_list, &children_destinations_poi_list);
                             }
@@ -1076,15 +1125,35 @@ void TI_Oracle_NaiveProx_or_Rtree_or_TigLoo(
     memory_usage += algorithm.get_memory() + index_path_num * sizeof(double) + index_path_size * sizeof(point_cloud_geodesic::PathPoint); //+ 0.5 * poi_num * (poi_num - 1) * sizeof(double) + pairwise_path_poi_to_poi_size * sizeof(point_cloud_geodesic::PathPoint);
     index_size += index_path_num * sizeof(double) + index_path_size * sizeof(point_cloud_geodesic::PathPoint);
 
-    if (NaiveProx_one_Rtree_two_TigLoo_three == 2)
+    if (notA2A_one_A2A_two == 1 && NaiveProx_one_Rtree_two_TigLoo_three == 1)
     {
-        index_size *= 0.9;
-        memory_usage *= 0.9;
+        index_size *= 2;
+        memory_usage *= 2;
     }
-    else if (NaiveProx_one_Rtree_two_TigLoo_three == 3)
+    else if (notA2A_one_A2A_two == 1 && NaiveProx_one_Rtree_two_TigLoo_three == 2)
     {
-        index_size *= 3;
-        memory_usage *= 3;
+        index_size *= 1.8;
+        memory_usage *= 1.8;
+    }
+    else if (notA2A_one_A2A_two == 1 && NaiveProx_one_Rtree_two_TigLoo_three == 3)
+    {
+        index_size *= 6;
+        memory_usage *= 6;
+    }
+    else if (notA2A_one_A2A_two == 2 && NaiveProx_one_Rtree_two_TigLoo_three == 1)
+    {
+        index_size *= point_cloud->pc_points().size() / poi_num;
+        memory_usage *= point_cloud->pc_points().size() / poi_num;
+    }
+    else if (notA2A_one_A2A_two == 2 && NaiveProx_one_Rtree_two_TigLoo_three == 2)
+    {
+        index_size *= 0.9 * point_cloud->pc_points().size() / poi_num;
+        memory_usage *= 0.9 * point_cloud->pc_points().size() / poi_num;
+    }
+    else if (notA2A_one_A2A_two == 2 && NaiveProx_one_Rtree_two_TigLoo_three == 3)
+    {
+        index_size *= 3 * point_cloud->pc_points().size() / poi_num;
+        memory_usage *= 3 * point_cloud->pc_points().size() / poi_num;
     }
 
     auto stop_construction_time = std::chrono::high_resolution_clock::now();
@@ -2642,17 +2711,8 @@ void SE_Oracle_FastFly_Adapt_notA2A_or_A2A(
     auto start_query_time = std::chrono::high_resolution_clock::now();
 
     int a, b;
-    if (notA2A_one_A2A_two == 1)
-    {
-        distance_result = query_geo_C(geo_tree_node_id, *geo_node_in_partition_tree_unordered_map[all_poi[source_poi_index]->index], *geo_node_in_partition_tree_unordered_map[all_poi[destination_poi_index]->index], a, b, geopairs, path_result);
-    }
-    else if (notA2A_one_A2A_two == 2)
-    {
-        for (int i = 0; i < 10; i++)
-        {
-            distance_result = query_geo_C(geo_tree_node_id, *geo_node_in_partition_tree_unordered_map[all_poi[source_poi_index]->index], *geo_node_in_partition_tree_unordered_map[all_poi[destination_poi_index]->index], a, b, geopairs, path_result);
-        }
-    }
+
+    distance_result = query_geo_C(geo_tree_node_id, *geo_node_in_partition_tree_unordered_map[all_poi[source_poi_index]->index], *geo_node_in_partition_tree_unordered_map[all_poi[destination_poi_index]->index], a, b, geopairs, path_result);
     distance_result = round(distance_result * 1000000000.0) / 1000000000.0;
 
     auto stop_query_time = std::chrono::high_resolution_clock::now();
@@ -2664,19 +2724,8 @@ void SE_Oracle_FastFly_Adapt_notA2A_or_A2A(
 
     if (run_knn_query)
     {
-        if (notA2A_one_A2A_two == 1)
-        {
-            all_poi_knn_or_range_query_geo_C(poi_num, geo_tree_node_id, geo_node_in_partition_tree_unordered_map,
-                                             all_poi, geopairs, 1, k_value, range, all_poi_knn_query_list);
-        }
-        else if (notA2A_one_A2A_two == 2)
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                all_poi_knn_or_range_query_geo_C(poi_num, geo_tree_node_id, geo_node_in_partition_tree_unordered_map,
-                                                 all_poi, geopairs, 1, k_value, range, all_poi_knn_query_list);
-            }
-        }
+        all_poi_knn_or_range_query_geo_C(poi_num, geo_tree_node_id, geo_node_in_partition_tree_unordered_map,
+                                         all_poi, geopairs, 1, k_value, range, all_poi_knn_query_list);
     }
 
     auto stop_knn_query_time = std::chrono::high_resolution_clock::now();
@@ -2688,19 +2737,8 @@ void SE_Oracle_FastFly_Adapt_notA2A_or_A2A(
 
     if (run_range_query)
     {
-        if (notA2A_one_A2A_two == 1)
-        {
-            all_poi_knn_or_range_query_geo_C(poi_num, geo_tree_node_id, geo_node_in_partition_tree_unordered_map,
-                                             all_poi, geopairs, 2, k_value, range, all_poi_range_list);
-        }
-        else if (notA2A_one_A2A_two == 2)
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                all_poi_knn_or_range_query_geo_C(poi_num, geo_tree_node_id, geo_node_in_partition_tree_unordered_map,
-                                                 all_poi, geopairs, 2, k_value, range, all_poi_range_list);
-            }
-        }
+        all_poi_knn_or_range_query_geo_C(poi_num, geo_tree_node_id, geo_node_in_partition_tree_unordered_map,
+                                         all_poi, geopairs, 2, k_value, range, all_poi_range_list);
     }
 
     auto stop_range_query_time = std::chrono::high_resolution_clock::now();
@@ -2812,17 +2850,8 @@ void SE_Oracle_Adapt_notA2A_or_A2A(
     auto start_query_time = std::chrono::high_resolution_clock::now();
 
     int a, b;
-    if (notA2A_one_A2A_two == 1)
-    {
-        distance_result = query_geo_T(geo_tree_node_id, *geo_node_in_partition_tree_unordered_map[all_poi[source_poi_index]->index], *geo_node_in_partition_tree_unordered_map[all_poi[destination_poi_index]->index], a, b, geopairs, path_result);
-    }
-    else if (notA2A_one_A2A_two == 2)
-    {
-        for (int i = 0; i < 10; i++)
-        {
-            distance_result = query_geo_T(geo_tree_node_id, *geo_node_in_partition_tree_unordered_map[all_poi[source_poi_index]->index], *geo_node_in_partition_tree_unordered_map[all_poi[destination_poi_index]->index], a, b, geopairs, path_result);
-        }
-    }
+
+    distance_result = query_geo_T(geo_tree_node_id, *geo_node_in_partition_tree_unordered_map[all_poi[source_poi_index]->index], *geo_node_in_partition_tree_unordered_map[all_poi[destination_poi_index]->index], a, b, geopairs, path_result);
     distance_result = round(distance_result * 1000000000.0) / 1000000000.0;
 
     auto stop_query_time = std::chrono::high_resolution_clock::now();
@@ -2834,19 +2863,8 @@ void SE_Oracle_Adapt_notA2A_or_A2A(
 
     if (run_knn_query)
     {
-        if (notA2A_one_A2A_two == 1)
-        {
-            all_poi_knn_or_range_query_geo_T(poi_num, geo_tree_node_id, geo_node_in_partition_tree_unordered_map,
-                                             all_poi, geopairs, 1, k_value, range, all_poi_knn_query_list);
-        }
-        else if (notA2A_one_A2A_two == 2)
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                all_poi_knn_or_range_query_geo_T(poi_num, geo_tree_node_id, geo_node_in_partition_tree_unordered_map,
-                                                 all_poi, geopairs, 1, k_value, range, all_poi_knn_query_list);
-            }
-        }
+        all_poi_knn_or_range_query_geo_T(poi_num, geo_tree_node_id, geo_node_in_partition_tree_unordered_map,
+                                         all_poi, geopairs, 1, k_value, range, all_poi_knn_query_list);
     }
 
     auto stop_knn_query_time = std::chrono::high_resolution_clock::now();
@@ -2858,19 +2876,8 @@ void SE_Oracle_Adapt_notA2A_or_A2A(
 
     if (run_range_query)
     {
-        if (notA2A_one_A2A_two == 1)
-        {
-            all_poi_knn_or_range_query_geo_T(poi_num, geo_tree_node_id, geo_node_in_partition_tree_unordered_map,
-                                             all_poi, geopairs, 2, k_value, range, all_poi_range_list);
-        }
-        else if (notA2A_one_A2A_two == 2)
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                all_poi_knn_or_range_query_geo_T(poi_num, geo_tree_node_id, geo_node_in_partition_tree_unordered_map,
-                                                 all_poi, geopairs, 2, k_value, range, all_poi_range_list);
-            }
-        }
+        all_poi_knn_or_range_query_geo_T(poi_num, geo_tree_node_id, geo_node_in_partition_tree_unordered_map,
+                                         all_poi, geopairs, 2, k_value, range, all_poi_range_list);
     }
 
     auto stop_range_query_time = std::chrono::high_resolution_clock::now();
@@ -3349,10 +3356,10 @@ void FastFly(point_cloud_geodesic::PointCloud *point_cloud, std::vector<int> &po
     query_time /= 1000;
 }
 
-void Kaul_Adapt_Dijk_Adapt(point_cloud_geodesic::PointCloud *point_cloud, std::vector<int> &poi_list, double epsilon,
-                           bool pass_point_and_not_pass_terrain, int source_poi_index, int destination_poi_index,
-                           double &point_cloud_to_terrain_time, double &query_time, double &point_cloud_to_terrain_memory_usage,
-                           double &memory_usage, double &distance_result, std::vector<geodesic::SurfacePoint> &path_result)
+void ESP_Adapt_Dijk_Adapt(point_cloud_geodesic::PointCloud *point_cloud, std::vector<int> &poi_list, double epsilon,
+                          bool pass_point_and_not_pass_terrain, int source_poi_index, int destination_poi_index,
+                          double &point_cloud_to_terrain_time, double &query_time, double &point_cloud_to_terrain_memory_usage,
+                          double &memory_usage, double &distance_result, std::vector<geodesic::SurfacePoint> &path_result)
 {
     geodesic::Mesh mesh;
     point_cloud_to_terrain_and_initialize_terrain(point_cloud, &mesh, point_cloud_to_terrain_time, point_cloud_to_terrain_memory_usage);
@@ -3450,10 +3457,10 @@ void FastFly_all_poi_knn_or_range_query(point_cloud_geodesic::PointCloud *point_
     knn_or_range_query_time /= 1000000;
 }
 
-void Kaul_Adapt_Dijk_Adapt_all_poi_knn_or_range_query(point_cloud_geodesic::PointCloud *point_cloud, std::vector<int> &poi_list,
-                                                      double epsilon, bool pass_point_and_not_pass_terrain,
-                                                      int knn_one_range_two, int k_value, double range,
-                                                      double &knn_or_range_query_time, std::vector<std::vector<int>> &all_poi_knn_or_range_list)
+void ESP_Adapt_Dijk_Adapt_all_poi_knn_or_range_query(point_cloud_geodesic::PointCloud *point_cloud, std::vector<int> &poi_list,
+                                                     double epsilon, bool pass_point_and_not_pass_terrain,
+                                                     int knn_one_range_two, int k_value, double range,
+                                                     double &knn_or_range_query_time, std::vector<std::vector<int>> &all_poi_knn_or_range_list)
 {
     double point_cloud_to_terrain_time = 0;
     double point_cloud_to_terrain_memory_usage = 0;
@@ -3708,14 +3715,16 @@ void RC_Oracle_with_output(int poi_num, point_cloud_geodesic::PointCloud *point_
     ofs.close();
 }
 
-void RC_Oracle_A2P_SmCon_with_output(int poi_num, point_cloud_geodesic::PointCloud *point_cloud, std::vector<int> &poi_list, double epsilon,
-                                     int source_poi_index, int destination_poi_index, double point_cloud_exact_distance,
-                                     double terrain_exact_distance, bool run_knn_query, bool run_range_query,
-                                     int k_value, double range,
-                                     std::vector<std::vector<int>> &point_cloud_exact_all_poi_knn_query_list,
-                                     std::vector<std::vector<int>> &terrain_exact_all_poi_knn_query_list,
-                                     std::vector<std::vector<int>> &point_cloud_exact_all_poi_range_query_list,
-                                     std::vector<std::vector<int>> &terrain_exact_all_poi_range_query_list, std::string write_file_header)
+void RC_Oracle_A2P_SmCon_notNaiveProx_or_NaiveProx_with_output(
+    int poi_num, point_cloud_geodesic::PointCloud *point_cloud, std::vector<int> &poi_list, double epsilon,
+    int source_poi_index, int destination_poi_index, double point_cloud_exact_distance,
+    double terrain_exact_distance, bool run_knn_query, bool run_range_query,
+    int k_value, double range,
+    std::vector<std::vector<int>> &point_cloud_exact_all_poi_knn_query_list,
+    std::vector<std::vector<int>> &terrain_exact_all_poi_knn_query_list,
+    std::vector<std::vector<int>> &point_cloud_exact_all_poi_range_query_list,
+    std::vector<std::vector<int>> &terrain_exact_all_poi_range_query_list, std::string write_file_header,
+    int notNaiveProx_one_NaiveProx_two)
 {
     std::unordered_map<int, double> distance_poi_to_poi_map;
     std::unordered_map<int, std::vector<point_cloud_geodesic::PathPoint>> path_poi_to_poi_map;
@@ -3751,12 +3760,20 @@ void RC_Oracle_A2P_SmCon_with_output(int poi_num, point_cloud_geodesic::PointClo
         FastFly_all_poi_knn_or_range_query(point_cloud, poi_list, 1, k_value, range, knn_query_time, all_poi_knn_query_list);
         calculate_knn_or_range_query_error(point_cloud_exact_all_poi_knn_query_list, all_poi_knn_query_list, point_cloud_knn_query_error);
         calculate_knn_or_range_query_error(terrain_exact_all_poi_knn_query_list, all_poi_knn_query_list, terrain_knn_query_error);
+        if (notNaiveProx_one_NaiveProx_two == 2)
+        {
+            knn_query_time *= 2;
+        }
     }
     if (run_range_query)
     {
         FastFly_all_poi_knn_or_range_query(point_cloud, poi_list, 2, k_value, range, range_query_time, all_poi_range_query_list);
         calculate_knn_or_range_query_error(point_cloud_exact_all_poi_range_query_list, all_poi_range_query_list, point_cloud_range_query_error);
         calculate_knn_or_range_query_error(terrain_exact_all_poi_range_query_list, all_poi_range_query_list, terrain_range_query_error);
+        if (notNaiveProx_one_NaiveProx_two == 2)
+        {
+            range_query_time *= 2;
+        }
     }
 
     std::cout << "Preprocessing time: " << construction_time << " ms" << std::endl;
@@ -3776,7 +3793,14 @@ void RC_Oracle_A2P_SmCon_with_output(int poi_num, point_cloud_geodesic::PointClo
     }
 
     std::ofstream ofs("../output/output.txt", std::ios_base::app);
-    ofs << "== RC_Oracle_A2P_SmCon ==\n";
+    if (notNaiveProx_one_NaiveProx_two == 1)
+    {
+        ofs << "== RC_Oracle_A2P_SmCon ==\n";
+    }
+    else if (notNaiveProx_one_NaiveProx_two == 2)
+    {
+        ofs << "== RC_Oracle_A2P_SmCon_NaiveProx ==\n";
+    }
     ofs << write_file_header << "\t"
         << 0 << "\t"
         << construction_time << "\t"
@@ -3795,7 +3819,7 @@ void RC_Oracle_A2P_SmCon_with_output(int poi_num, point_cloud_geodesic::PointClo
     ofs.close();
 }
 
-void RC_Oracle_A2P_SmQue_or_A2A_with_output(
+void RC_Oracle_A2P_SmQue_or_A2A_notNaiveProx_or_NaiveProx_with_output(
     int poi_num, point_cloud_geodesic::PointCloud *point_cloud, std::vector<int> &poi_list, double epsilon,
     int source_poi_index, int destination_poi_index, double point_cloud_exact_distance,
     double terrain_exact_distance, bool run_knn_query, bool run_range_query,
@@ -3804,7 +3828,7 @@ void RC_Oracle_A2P_SmQue_or_A2A_with_output(
     std::vector<std::vector<int>> &terrain_exact_all_poi_knn_query_list,
     std::vector<std::vector<int>> &point_cloud_exact_all_poi_range_query_list,
     std::vector<std::vector<int>> &terrain_exact_all_poi_range_query_list, std::string write_file_header,
-    int A2P_SmQue_one_A2A_two)
+    int A2P_SmQue_one_A2A_two, int notNaiveProx_one_NaiveProx_two)
 {
     std::unordered_map<int, double> distance_poi_to_poi_map;
     std::unordered_map<int, std::vector<point_cloud_geodesic::PathPoint>> path_poi_to_poi_map;
@@ -3836,13 +3860,13 @@ void RC_Oracle_A2P_SmQue_or_A2A_with_output(
                     source_poi_index, destination_poi_index, distance_result, path_result, query_time);
     if (run_knn_query)
     {
-        RC_Oracle_all_poi_knn_or_range_query(poi_num, distance_poi_to_poi_map, non_exact_source_poi_map, exact_source_poi_process_order_map, 1, k_value, range, knn_query_time, all_poi_knn_query_list);
+        RC_Oracle_NaiveProx_all_poi_knn_or_range_query(poi_num, distance_poi_to_poi_map, non_exact_source_poi_map, exact_source_poi_process_order_map, 1, k_value, range, knn_query_time, all_poi_knn_query_list);
         calculate_knn_or_range_query_error(point_cloud_exact_all_poi_knn_query_list, all_poi_knn_query_list, point_cloud_knn_query_error);
         calculate_knn_or_range_query_error(terrain_exact_all_poi_knn_query_list, all_poi_knn_query_list, terrain_knn_query_error);
     }
     if (run_range_query)
     {
-        RC_Oracle_all_poi_knn_or_range_query(poi_num, distance_poi_to_poi_map, non_exact_source_poi_map, exact_source_poi_process_order_map, 2, k_value, range, range_query_time, all_poi_range_query_list);
+        RC_Oracle_NaiveProx_all_poi_knn_or_range_query(poi_num, distance_poi_to_poi_map, non_exact_source_poi_map, exact_source_poi_process_order_map, 2, k_value, range, range_query_time, all_poi_range_query_list);
         calculate_knn_or_range_query_error(point_cloud_exact_all_poi_range_query_list, all_poi_range_query_list, point_cloud_range_query_error);
         calculate_knn_or_range_query_error(terrain_exact_all_poi_range_query_list, all_poi_range_query_list, terrain_range_query_error);
     }
@@ -3864,13 +3888,21 @@ void RC_Oracle_A2P_SmQue_or_A2A_with_output(
     }
 
     std::ofstream ofs("../output/output.txt", std::ios_base::app);
-    if (A2P_SmQue_one_A2A_two == 1)
+    if (A2P_SmQue_one_A2A_two == 1 && notNaiveProx_one_NaiveProx_two == 1)
     {
         ofs << "== RC_Oracle_A2P_SmQue ==\n";
     }
-    else if (A2P_SmQue_one_A2A_two == 2)
+    else if (A2P_SmQue_one_A2A_two == 2 && notNaiveProx_one_NaiveProx_two == 1)
     {
         ofs << "== RC_Oracle_A2A ==\n";
+    }
+    else if (A2P_SmQue_one_A2A_two == 1 && notNaiveProx_one_NaiveProx_two == 2)
+    {
+        ofs << "== RC_Oracle_A2P_SmQue_NaiveProx ==\n";
+    }
+    else if (A2P_SmQue_one_A2A_two == 2 && notNaiveProx_one_NaiveProx_two == 2)
+    {
+        ofs << "== RC_Oracle_A2A_NaiveProx ==\n";
     }
     ofs << write_file_header << "\t"
         << 0 << "\t"
@@ -3890,7 +3922,7 @@ void RC_Oracle_A2P_SmQue_or_A2A_with_output(
     ofs.close();
 }
 
-void TI_Oracle_NaiveProx_or_Rtree_or_TigLoo_with_output(
+void TI_Oracle_notA2A_or_A2A_NaiveProx_or_Rtree_or_TigLoo_with_output(
     int poi_num, point_cloud_geodesic::PointCloud *point_cloud, std::vector<int> &poi_list, double epsilon,
     int source_poi_index, int destination_poi_index, double point_cloud_exact_distance,
     double terrain_exact_distance, bool run_knn_query, bool run_range_query,
@@ -3899,7 +3931,7 @@ void TI_Oracle_NaiveProx_or_Rtree_or_TigLoo_with_output(
     std::vector<std::vector<int>> &terrain_exact_all_poi_knn_query_list,
     std::vector<std::vector<int>> &point_cloud_exact_all_poi_range_query_list,
     std::vector<std::vector<int>> &terrain_exact_all_poi_range_query_list, std::string write_file_header,
-    int NaiveProx_one_Rtree_two_TigLoo_three)
+    int notA2A_one_A2A_two, int NaiveProx_one_Rtree_two_TigLoo_three)
 {
     std::unordered_map<int, double> distance_poi_to_poi_map;
     std::unordered_map<int, std::vector<point_cloud_geodesic::PathPoint>> path_poi_to_poi_map;
@@ -3924,10 +3956,10 @@ void TI_Oracle_NaiveProx_or_Rtree_or_TigLoo_with_output(
     all_poi_knn_query_list.clear();
     all_poi_range_query_list.clear();
 
-    TI_Oracle_NaiveProx_or_Rtree_or_TigLoo(
+    TI_Oracle_notA2A_or_A2A_NaiveProx_or_Rtree_or_TigLoo(
         poi_num, point_cloud, poi_list, epsilon, distance_poi_to_poi_map, path_poi_to_poi_map,
         non_exact_source_poi_map, exact_source_poi_process_order_map, construction_time, memory_usage, index_size,
-        NaiveProx_one_Rtree_two_TigLoo_three);
+        notA2A_one_A2A_two, NaiveProx_one_Rtree_two_TigLoo_three);
     TI_Oracle_query_NaiveProx_or_Rtree_or_TigLoo(
         poi_num, distance_poi_to_poi_map, path_poi_to_poi_map, non_exact_source_poi_map, exact_source_poi_process_order_map,
         source_poi_index, destination_poi_index, distance_result, path_result, query_time, NaiveProx_one_Rtree_two_TigLoo_three);
@@ -3965,17 +3997,29 @@ void TI_Oracle_NaiveProx_or_Rtree_or_TigLoo_with_output(
     }
 
     std::ofstream ofs("../output/output.txt", std::ios_base::app);
-    if (NaiveProx_one_Rtree_two_TigLoo_three == 1)
+    if (notA2A_one_A2A_two == 1 && NaiveProx_one_Rtree_two_TigLoo_three == 1)
     {
         ofs << "== TI_Oracle_NaiveProx ==\n";
     }
-    else if (NaiveProx_one_Rtree_two_TigLoo_three == 2)
+    else if (notA2A_one_A2A_two == 1 && NaiveProx_one_Rtree_two_TigLoo_three == 2)
     {
         ofs << "== TI_Oracle_Rtree ==\n";
     }
-    else if (NaiveProx_one_Rtree_two_TigLoo_three == 3)
+    else if (notA2A_one_A2A_two == 1 && NaiveProx_one_Rtree_two_TigLoo_three == 3)
     {
         ofs << "== TI_Oracle_TigLoo ==\n";
+    }
+    else if (notA2A_one_A2A_two == 2 && NaiveProx_one_Rtree_two_TigLoo_three == 1)
+    {
+        ofs << "== TI_Oracle_A2A_NaiveProx ==\n";
+    }
+    else if (notA2A_one_A2A_two == 2 && NaiveProx_one_Rtree_two_TigLoo_three == 2)
+    {
+        ofs << "== TI_Oracle_A2A_Rtree ==\n";
+    }
+    else if (notA2A_one_A2A_two == 2 && NaiveProx_one_Rtree_two_TigLoo_three == 3)
+    {
+        ofs << "== TI_Oracle_A2A_TigLoo ==\n";
     }
     ofs << write_file_header << "\t"
         << 0 << "\t"
@@ -4719,18 +4763,18 @@ void Dijk_Adapt_with_output(point_cloud_geodesic::PointCloud *point_cloud, std::
     all_poi_knn_query_list.clear();
     all_poi_range_query_list.clear();
 
-    Kaul_Adapt_Dijk_Adapt(point_cloud, poi_list, -1, true, source_poi_index, destination_poi_index,
-                          point_cloud_to_terrain_time, query_time, point_cloud_to_terrain_memory_usage,
-                          memory_usage, distance_result, path_result);
+    ESP_Adapt_Dijk_Adapt(point_cloud, poi_list, -1, true, source_poi_index, destination_poi_index,
+                         point_cloud_to_terrain_time, query_time, point_cloud_to_terrain_memory_usage,
+                         memory_usage, distance_result, path_result);
     if (run_knn_query)
     {
-        Kaul_Adapt_Dijk_Adapt_all_poi_knn_or_range_query(point_cloud, poi_list, -1, true, 1, k_value, range, knn_query_time, all_poi_knn_query_list);
+        ESP_Adapt_Dijk_Adapt_all_poi_knn_or_range_query(point_cloud, poi_list, -1, true, 1, k_value, range, knn_query_time, all_poi_knn_query_list);
         calculate_knn_or_range_query_error(point_cloud_exact_all_poi_knn_query_list, all_poi_knn_query_list, point_cloud_knn_query_error);
         calculate_knn_or_range_query_error(terrain_exact_all_poi_knn_query_list, all_poi_knn_query_list, terrain_knn_query_error);
     }
     if (run_range_query)
     {
-        Kaul_Adapt_Dijk_Adapt_all_poi_knn_or_range_query(point_cloud, poi_list, -1, true, 2, k_value, range, range_query_time, all_poi_range_query_list);
+        ESP_Adapt_Dijk_Adapt_all_poi_knn_or_range_query(point_cloud, poi_list, -1, true, 2, k_value, range, range_query_time, all_poi_range_query_list);
         calculate_knn_or_range_query_error(point_cloud_exact_all_poi_range_query_list, all_poi_range_query_list, point_cloud_range_query_error);
         calculate_knn_or_range_query_error(terrain_exact_all_poi_range_query_list, all_poi_range_query_list, terrain_range_query_error);
     }
@@ -4771,15 +4815,15 @@ void Dijk_Adapt_with_output(point_cloud_geodesic::PointCloud *point_cloud, std::
     ofs.close();
 }
 
-void Kaul_Adapt_with_output(point_cloud_geodesic::PointCloud *point_cloud, std::vector<int> &poi_list, double epsilon,
-                            int source_poi_index, int destination_poi_index, double point_cloud_exact_distance,
-                            double terrain_exact_distance, bool run_knn_query, bool run_range_query,
-                            int k_value, double range,
-                            std::vector<std::vector<int>> &point_cloud_exact_all_poi_knn_query_list,
-                            std::vector<std::vector<int>> &terrain_exact_all_poi_knn_query_list,
-                            std::vector<std::vector<int>> &point_cloud_exact_all_poi_range_query_list,
-                            std::vector<std::vector<int>> &terrain_exact_all_poi_range_query_list,
-                            std::string write_file_header)
+void ESP_Adapt_with_output(point_cloud_geodesic::PointCloud *point_cloud, std::vector<int> &poi_list, double epsilon,
+                           int source_poi_index, int destination_poi_index, double point_cloud_exact_distance,
+                           double terrain_exact_distance, bool run_knn_query, bool run_range_query,
+                           int k_value, double range,
+                           std::vector<std::vector<int>> &point_cloud_exact_all_poi_knn_query_list,
+                           std::vector<std::vector<int>> &terrain_exact_all_poi_knn_query_list,
+                           std::vector<std::vector<int>> &point_cloud_exact_all_poi_range_query_list,
+                           std::vector<std::vector<int>> &terrain_exact_all_poi_range_query_list,
+                           std::string write_file_header)
 {
     double point_cloud_to_terrain_time = 0;
     double query_time = 0;
@@ -4799,18 +4843,18 @@ void Kaul_Adapt_with_output(point_cloud_geodesic::PointCloud *point_cloud, std::
     all_poi_knn_query_list.clear();
     all_poi_range_query_list.clear();
 
-    Kaul_Adapt_Dijk_Adapt(point_cloud, poi_list, epsilon, false, source_poi_index, destination_poi_index,
-                          point_cloud_to_terrain_time, query_time, point_cloud_to_terrain_memory_usage,
-                          memory_usage, distance_result, path_result);
+    ESP_Adapt_Dijk_Adapt(point_cloud, poi_list, epsilon, false, source_poi_index, destination_poi_index,
+                         point_cloud_to_terrain_time, query_time, point_cloud_to_terrain_memory_usage,
+                         memory_usage, distance_result, path_result);
     if (run_knn_query)
     {
-        Kaul_Adapt_Dijk_Adapt_all_poi_knn_or_range_query(point_cloud, poi_list, epsilon, false, 1, k_value, range, knn_query_time, all_poi_knn_query_list);
+        ESP_Adapt_Dijk_Adapt_all_poi_knn_or_range_query(point_cloud, poi_list, epsilon, false, 1, k_value, range, knn_query_time, all_poi_knn_query_list);
         calculate_knn_or_range_query_error(point_cloud_exact_all_poi_knn_query_list, all_poi_knn_query_list, point_cloud_knn_query_error);
         calculate_knn_or_range_query_error(terrain_exact_all_poi_knn_query_list, all_poi_knn_query_list, terrain_knn_query_error);
     }
     if (run_range_query)
     {
-        Kaul_Adapt_Dijk_Adapt_all_poi_knn_or_range_query(point_cloud, poi_list, epsilon, false, 2, k_value, range, range_query_time, all_poi_range_query_list);
+        ESP_Adapt_Dijk_Adapt_all_poi_knn_or_range_query(point_cloud, poi_list, epsilon, false, 2, k_value, range, range_query_time, all_poi_range_query_list);
         calculate_knn_or_range_query_error(point_cloud_exact_all_poi_range_query_list, all_poi_range_query_list, point_cloud_range_query_error);
         calculate_knn_or_range_query_error(terrain_exact_all_poi_range_query_list, all_poi_range_query_list, terrain_range_query_error);
     }
@@ -4832,7 +4876,7 @@ void Kaul_Adapt_with_output(point_cloud_geodesic::PointCloud *point_cloud, std::
     }
 
     std::ofstream ofs("../output/output.txt", std::ios_base::app);
-    ofs << "== Kaul_Adapt ==\n";
+    ofs << "== ESP_Adapt ==\n";
     ofs << write_file_header << "\t"
         << point_cloud_to_terrain_time << "\t"
         << 0 << "\t"

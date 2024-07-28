@@ -4,7 +4,7 @@
 
 This project provides the implementation for efficient path oracles for proximity queries on point clouds. We refer the readers to our paper for more details.
 
-We compared 24 algorithms as follows:
+We compared 30 algorithms as follows:
 
 - SE-Oracle-Adapt (oracle based baseline)
 - SE-Oracle-FastFly-Adapt (oracle in ablation study)
@@ -17,6 +17,9 @@ We compared 24 algorithms as follows:
 - RC-Oracle-Naive (variation oracle)
 - RC-Oracle-Naive-A2A (variation oracle)
 - RC-Oracle-NaiveProx (variation oracle)
+- RC-Oracle-A2P-SmCon-NaiveProx (variation oracle)
+- RC-Oracle-A2P-SmQue-NaiveProx (variation oracle)
+- RC-Oracle-A2A-NaiveProx (variation oracle)
 - RC-Oracle (our oracle)
 - RC-Oracle-A2P-SmCon (our oracle)
 - RC-Oracle-A2P-SmQue (our oracle)
@@ -24,10 +27,13 @@ We compared 24 algorithms as follows:
 - TI-Oracle-NaiveProx (variation oracle)
 - TI-Oracle-Rtree (variation oracle)
 - TI-Oracle-TigLoo (variation oracle)
+- TI-Oracle-A2A-NaiveProx (variation oracle)
+- TI-Oracle-A2A-Rtree (variation oracle)
+- TI-Oracle-A2A-TigLoo (variation oracle)
 - TI-Oracle (our oracle)
 - TI-Oracle-A2A (our oracle)
 - DIO-Adapt (on-the-fly baseline)
-- Kaul-Adapt (on-the-fly baseline)
+- ESP-Adapt (on-the-fly baseline)
 - Dijk-Adapt (on-the-fly baseline)
 - FastFly (our on-the-fly)
 
@@ -278,7 +284,7 @@ For the [point_cloud_data_and_point_number_and_poi_number_map_index], each index
 | 73 | RM | 2000832 | 500 |
 | 74 | RM | 2502075 | 500 |
 
-Since SE-Oracle-Adapt, SE-Oracle-Adapt-A2A, EAR-Oracle-Adapt, SU-Oracle-Adapt, SU_Oracle_Adapt_A2A, RC-Oracle-Naive and RC_Oracle_Naive_A2A are time consuming, the project will run SE-Oracle-Adapt, SE-Oracle-FastFly-Adapt, SE-Oracle-Adapt-A2A, SE-Oracle-FastFly-Adapt-A2A, EAR-Oracle-Adapt, EAR-Oracle-FastFly-Adapt, SU-Oracle-Adapt, SU-Oracle-Adapt-A2A, RC-Oracle-Naive, RC-Oracle-Naive-A2A, RC-Oracle-NaiveProx, RC-Oracle, RC-Oracle-A2P-SmCon, RC-Oracle-A2P-SmQue, RC-Oracle-A2A, TI-Oracle-NaiveProx, TI-Oracle-Rtree, TI-Oracle-TigLoo, TI-Oracle, TI-Oracle-A2A, DIO-Adapt, Kaul-Adapt, Dijk-Adapt, and FastFly on small-version dataset with default 50 POIs([point_cloud_data_and_point_number_and_poi_number_map_index] <= 29). The project will run SE-Oracle-FastFly-Adapt, SE-Oracle-FastFly-Adapt-A2A, EAR-Oracle-FastFly-Adapt, RC-Oracle-NaiveProx, RC-Oracle, RC-Oracle-A2P-SmCon, RC-Oracle-A2P-SmQue, RC-Oracle-A2A, TI-Oracle-NaiveProx, TI-Oracle-Rtree, TI-Oracle-TigLoo, TI-Oracle, TI-Oracle-A2A, DIO-Adapt, Kaul-Adapt, Dijk-Adapt, and FastFly on large-version dataset with default 500 POIs ([point_cloud_data_and_point_number_and_poi_number_map_index] > 29).
+Since SE-Oracle-Adapt, SE-Oracle-Adapt-A2A, EAR-Oracle-Adapt, SU-Oracle-Adapt, SU_Oracle_Adapt_A2A, RC-Oracle-Naive and RC_Oracle_Naive_A2A are time consuming, the project will run SE-Oracle-Adapt, SE-Oracle-FastFly-Adapt, SE-Oracle-Adapt-A2A, SE-Oracle-FastFly-Adapt-A2A, EAR-Oracle-Adapt, EAR-Oracle-FastFly-Adapt, SU-Oracle-Adapt, SU-Oracle-Adapt-A2A, RC-Oracle-Naive, RC-Oracle-Naive-A2A, RC-Oracle-NaiveProx, RC-Oracle-A2P-SmCon-NaiveProx, RC-Oracle-A2P-SmQue-NaiveProx, RC-Oracle-A2A-NaiveProx, RC-Oracle, RC-Oracle-A2P-SmCon, RC-Oracle-A2P-SmQue, RC-Oracle-A2A, TI-Oracle-NaiveProx, TI-Oracle-Rtree, TI-Oracle-TigLoo, TI-Oracle-A2A-NaiveProx, TI-Oracle-A2A-Rtree, TI-Oracle-A2A-TigLoo, TI-Oracle, TI-Oracle-A2A, DIO-Adapt, ESP-Adapt, Dijk-Adapt, and FastFly on small-version dataset with default 50 POIs([point_cloud_data_and_point_number_and_poi_number_map_index] <= 29). The project will run SE-Oracle-FastFly-Adapt, SE-Oracle-FastFly-Adapt-A2A, EAR-Oracle-FastFly-Adapt, RC-Oracle-NaiveProx, RC-Oracle-A2P-SmCon-NaiveProx, RC-Oracle-A2P-SmQue-NaiveProx, RC-Oracle-A2A-NaiveProx, RC-Oracle, RC-Oracle-A2P-SmCon, RC-Oracle-A2P-SmQue, RC-Oracle-A2A, TI-Oracle-NaiveProx, TI-Oracle-Rtree, TI-Oracle-TigLoo, TI-Oracle-A2A-NaiveProx, TI-Oracle-A2A-Rtree, TI-Oracle-A2A-TigLoo, TI-Oracle, TI-Oracle-A2A, DIO-Adapt, ESP-Adapt, Dijk-Adapt, and FastFly on large-version dataset with default 500 POIs ([point_cloud_data_and_point_number_and_poi_number_map_index] > 29).
 
 In addition, we strongly encourage you to set [run_knn] to 0 if you are not conducting experiments. Otherwise, it will take a very long time to run calculate the knn of all POIs. 
 
@@ -288,7 +294,7 @@ An example:
 ./main 0 0.5 0 0
 ```
 
-In this example, [point_cloud_data_and_point_number_and_poi_number_map_index] is 0, [epsilon] is 0.5, [run_knn_query] is 0, [run_range_query] is 0. So, it will run BH point cloud dataset, with point number equal to 10086 and poi number equal to 50, epsilon is 0.5, it will not run all POIs knn query and will not run all POIs range query. It will run 10 algorithms.
+In this example, [point_cloud_data_and_point_number_and_poi_number_map_index] is 0, [epsilon] is 0.5, [run_knn_query] is 0, [run_range_query] is 0. So, it will run BH point cloud dataset, with point number equal to 10086 and poi number equal to 50, epsilon is 0.5, it will not run all POIs knn query and will not run all POIs range query. It will run 30 algorithms.
 
 ## Output
 
