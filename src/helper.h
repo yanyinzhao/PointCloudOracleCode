@@ -169,7 +169,7 @@ public:
         std::pair<int, GeoNode *> q(this->index, this);
         p->covers.push_back(q);
     }
-    ~GeoNode(){};
+    ~GeoNode() {};
 };
 
 class GeoPair_C
@@ -421,6 +421,71 @@ double query_geo_T(int geo_tree_node_id, GeoNode &x, GeoNode &y,
     return query_geo_T(geo_tree_node_id, *x.parent, *y.parent, returned_source_neighbour_index, returned_destination_neighbour_index, geopairs, path_result);
 }
 
+void UP_Oracle_query_T(int poi_num, std::unordered_map<int, double> &pairwise_distance_poi_to_poi_map,
+                       std::unordered_map<int, std::vector<geodesic::SurfacePoint>> &pairwise_path_poi_to_poi_map,
+                       int source_poi_index, int destination_poi_index, double &distance_result,
+                       std::vector<geodesic::SurfacePoint> &path_result)
+{
+    int x_y;
+    if (source_poi_index > destination_poi_index)
+    {
+        int temp = destination_poi_index;
+        destination_poi_index = source_poi_index;
+        source_poi_index = temp;
+    }
+    hash_function_two_keys_to_one_key(poi_num, source_poi_index, destination_poi_index, x_y);
+    distance_result = pairwise_distance_poi_to_poi_map[x_y];
+    distance_result = round(distance_result * 1000000000.0) / 1000000000.0;
+    path_result = pairwise_path_poi_to_poi_map[x_y];
+}
+
+void UP_Oracle_query_C(int poi_num, std::unordered_map<int, double> &pairwise_distance_poi_to_poi_map,
+                       std::unordered_map<int, std::vector<point_cloud_geodesic::PathPoint>> &pairwise_path_poi_to_poi_map,
+                       int source_poi_index, int destination_poi_index, double &distance_result,
+                       std::vector<point_cloud_geodesic::PathPoint> &path_result)
+{
+    int x_y;
+    if (source_poi_index > destination_poi_index)
+    {
+        int temp = destination_poi_index;
+        destination_poi_index = source_poi_index;
+        source_poi_index = temp;
+    }
+    hash_function_two_keys_to_one_key(poi_num, source_poi_index, destination_poi_index, x_y);
+    distance_result = pairwise_distance_poi_to_poi_map[x_y];
+    distance_result = round(distance_result * 1000000000.0) / 1000000000.0;
+    path_result = pairwise_path_poi_to_poi_map[x_y];
+}
+
+void UP_Oracle_all_poi_knn_or_range_query(int poi_num, std::unordered_map<int, double> &pairwise_distance_poi_to_poi_map,
+                                          int knn_one_range_two, int k_value, double range,
+                                          std::vector<std::vector<int>> &all_poi_knn_or_range_list)
+{
+    std::vector<std::vector<std::pair<double, int>>> poi_to_other_poi_distance_and_index_list;
+    poi_to_other_poi_distance_and_index_list.clear();
+    std::vector<std::pair<double, int>> one_poi_to_other_poi_distance_and_index_list;
+    for (int i = 0; i < poi_num; i++)
+    {
+        one_poi_to_other_poi_distance_and_index_list.clear();
+        for (int j = 0; j < poi_num; j++)
+        {
+            int i_j;
+            if (i <= j)
+            {
+                hash_function_two_keys_to_one_key(poi_num, i, j, i_j);
+            }
+            else
+            {
+                hash_function_two_keys_to_one_key(poi_num, j, i, i_j);
+            }
+            one_poi_to_other_poi_distance_and_index_list.push_back(std::make_pair(pairwise_distance_poi_to_poi_map[i_j], j));
+        }
+        std::sort(one_poi_to_other_poi_distance_and_index_list.begin(), one_poi_to_other_poi_distance_and_index_list.end());
+        poi_to_other_poi_distance_and_index_list.push_back(one_poi_to_other_poi_distance_and_index_list);
+    }
+    knn_or_range_query(knn_one_range_two, k_value, range, poi_to_other_poi_distance_and_index_list, all_poi_knn_or_range_list);
+}
+
 void all_poi_knn_or_range_query_geo_C(int poi_num, int geo_tree_node_id,
                                       std::unordered_map<int, GeoNode *> &geo_node_in_partition_tree_unordered_map,
                                       std::vector<GeoNode *> &all_poi, std::unordered_map<int, GeoPair_C *> &geopairs,
@@ -518,7 +583,7 @@ double epslion_to_subdivision_level(double epsilon)
 void pre_compute_Point(int poi_num, point_cloud_geodesic::PointCloud *point_cloud, std::vector<int> &poi_list,
                        std::unordered_map<int, double> &pairwise_distance_poi_to_poi_map,
                        std::unordered_map<int, std::vector<point_cloud_geodesic::PathPoint>> &pairwise_path_poi_to_poi_map,
-                       double &memory_usage)
+                       double &memory_usage, double &index_size)
 {
     point_cloud_geodesic::PointCloudGeodesicAlgorithmDijkstra algorithm(point_cloud);
     double const distance_limit = point_cloud_geodesic::INFIN;
@@ -551,12 +616,13 @@ void pre_compute_Point(int poi_num, point_cloud_geodesic::PointCloud *point_clou
         }
     }
     memory_usage += algorithm.get_memory() + 0.5 * poi_num * (poi_num - 1) * sizeof(double) + pairwise_path_poi_to_poi_size * sizeof(point_cloud_geodesic::PathPoint);
+    index_size += 0.5 * poi_num * (poi_num - 1) * sizeof(double) + pairwise_path_poi_to_poi_size * sizeof(point_cloud_geodesic::PathPoint);
 }
 
 void pre_compute_FaceExact(int poi_num, geodesic::Mesh *mesh, std::vector<int> &poi_list,
                            std::unordered_map<int, double> &pairwise_distance_poi_to_poi_map,
                            std::unordered_map<int, std::vector<geodesic::SurfacePoint>> &pairwise_path_poi_to_poi_map,
-                           double &memory_usage)
+                           double &memory_usage, double &index_size)
 {
     geodesic::GeodesicAlgorithmExact algorithm(mesh);
     double const distance_limit = geodesic::GEODESIC_INF;
@@ -589,6 +655,7 @@ void pre_compute_FaceExact(int poi_num, geodesic::Mesh *mesh, std::vector<int> &
         }
     }
     memory_usage += algorithm.get_memory() + 0.5 * poi_num * (poi_num - 1) * sizeof(double) + pairwise_path_poi_to_poi_size * sizeof(geodesic::SurfacePoint);
+    index_size += 0.5 * poi_num * (poi_num - 1) * sizeof(double) + pairwise_path_poi_to_poi_size * sizeof(geodesic::SurfacePoint);
 }
 
 void build_level_C(int &geo_tree_node_id, point_cloud_geodesic::PointCloud *point_cloud, int depth,

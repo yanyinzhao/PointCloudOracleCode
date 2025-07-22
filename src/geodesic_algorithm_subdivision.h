@@ -17,7 +17,7 @@ namespace geodesic
 		typedef SubdivisionNode *node_pointer;
 
 	public:
-		SubdivisionNode(){};
+		SubdivisionNode() {};
 
 		template <class Pointer>
 		SubdivisionNode(Pointer p) : SurfacePoint(p),
@@ -29,7 +29,7 @@ namespace geodesic
 													  m_previous(NULL),
 													  m_distance(0.0){};
 
-		~SubdivisionNode(){};
+		~SubdivisionNode() {};
 
 		double &distance_from_source() { return m_distance; };
 		node_pointer &previous() { return m_previous; };
@@ -104,7 +104,7 @@ namespace geodesic
 			set_subdivision_level(++subdivision_level);
 		};
 
-		~GeodesicAlgorithmSubdivision(){};
+		~GeodesicAlgorithmSubdivision() {};
 
 		unsigned subdivision_level() { return m_subdivision_level; };
 
