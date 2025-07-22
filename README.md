@@ -66,6 +66,8 @@ The source code are stored in "src/" folder.
 
 The dataset are stored in "input/" folder.
 
+Before you run, please download some of the datasets from https://drive.google.com/file/d/1vKRVx7iTKDhARKW4yn8PbimaDiDqvp3h/view, and save in the "input/" folder, since these datasets are very large, and they exceed the maximum file upload size in Github.
+
 The datasets are as follows:
 
 - "BH_1014" (small version default resolution BH point cloud or TIN dataset with 1014 points or vertices)
